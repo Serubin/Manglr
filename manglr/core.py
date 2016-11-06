@@ -1,11 +1,11 @@
 from flask import Flask
 
-import util
 from api import api
 
 VERSION_HASH = ""
 
 app = Flask(__name__)
+
 
 api.register_blueprints(app)
 

@@ -74,19 +74,19 @@ class Url:
         res = None # Res init
 
         # Fetch results
-        if id:
+        if id or self._id:
             res = api.DB.urls.find({ 
                     'id': id
-                }, { "redirects": 0 }).limit(1)
+            }, { "redirects": 0 }).limit(1)
 
         if alias:
             res = api.DB.urls.find({ 'aliases': { 
                     '$in': [ alias ] 
                 } 
-                }, { "redirects": 0 }).limit(1)
+            }, { "redirects": 0 }).limit(1)
 
         # Process results
-        if res == None or res.count() < 1:
+        if not res or res.count() < 1:
             return False
         
         url = res[0] # Index 0 is guaranteed to exist
@@ -154,7 +154,7 @@ class Url:
         res = api.DB.urls.find_one_and_update({
                 'id': self._id
             },{
-                '$pull': { 'aliases': [ alias ] }
+                '$pull': { 'aliases': alias }
             })
     
         return True
@@ -216,7 +216,13 @@ class Url:
             return False
         
         return url # Return result
+    
+    def getTimestamp(self):
+        """ Returns timestamp """
+        if self._id == None:
+            return False
 
+        return self._timestamp
     def _createRandomHash(self, url, ip, attempt):
         """ Creates a random hash from the url, ip, and unix timestamp.
             Acts recursively until a unique id is created

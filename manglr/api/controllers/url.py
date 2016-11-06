@@ -40,7 +40,8 @@ def api_url_get(alias):
 
     retval = {
         'id': url.getID(),
-        'url': url.getURL()
+        'url': url.getURL(),
+        'created': url.getTimestamp()
     }
 
     return APIResp(Defines.SUCCESS_OK, retval)
@@ -54,8 +55,7 @@ def api_url_alias_add(url_id):
 
     alias = request.values.get('alias')
 
-    url = Url()
-    url.setID(url_id)
+    url = Url(id=url_id)
     
     res = url.addAlias(alias)
 
@@ -68,6 +68,29 @@ def api_url_alias_add(url_id):
     }
 
     return APIResp(Defines.SUCCESS_CREATED, retval)
+
+@api_url.route('/<url_id>/alias/rem')
+def api_url_alias_rem(url_id):
+    
+    if not request.values.get('alias'): # If no Alias is provided
+        return APIErrorResp(Defines.ERROR_PARAM, 'Param "alias" not provided')
+
+    alias = request.values.get('alias')
+
+    url = Url(id=url_id)
+    
+    res = url.delAlias(alias)
+
+    if not res:
+        return APIErrorResp(Defines.ERROR_NOT_FOUND, "Alias doesn't exist")
+    
+    retval = {
+        'id': str(url.getID()),
+        'alias': alias
+    }
+
+    return APIResp(Defines.SUCCESS_CREATED, retval)
+
 
 @api_url.route('/<url_id>/alias/')
 def api_alias_get(url_id):
