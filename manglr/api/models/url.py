@@ -113,6 +113,10 @@ class Url:
         """ Getter for url """
         return self._url
 
+    def setURL(self, url):
+        """ Setting for url """
+        self._url = url
+
     def getUserID(self):
         """ Getter for user id """
         return self._user_id
@@ -260,3 +264,23 @@ class Url:
     def _constructObject(self):
         """ Constructs database object to be inserted """
         pass
+
+    @staticmethod
+    def getUrlForUser(email):
+        res = api.DB.urls.find({ 
+            'user_id': email
+        }, { 
+            'id': 1,
+            'url': 1
+        })
+    
+        urls = []
+
+        for item in res:
+            url = Url()
+            url.setID(item.get('id'))
+            url.setURL(item.get('url'))
+            urls.append(url)
+
+        return urls
+

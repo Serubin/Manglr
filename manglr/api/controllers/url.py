@@ -30,6 +30,14 @@ def api_url_create():
     
     return APIResp(Defines.SUCCESS_CREATED, retval) 
 
+@api_url.route('/getall')
+def api_url_getall():
+    current_user = api.LOGIN_MANAGER.current_user.getEmail()
+
+    urls = User.getUrlForUser(current_user)
+
+    return APIResp(Defines.SUCCESS_OK, urls)
+    
 @api_url.route('/<alias>')
 def api_url_get(alias):
     
