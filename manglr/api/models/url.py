@@ -1,7 +1,6 @@
 import time, hashlib, json # for ip hashing
 import api
 
-from bson.objectid import ObjectId
 from pymongo import collection
 
 class Url:

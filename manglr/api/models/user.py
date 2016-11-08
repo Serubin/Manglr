@@ -1,4 +1,5 @@
-
+import api, base64, hashlib, bcrypt, time
+from pymongo import collection
 
 class User():
     
@@ -87,9 +88,11 @@ class User():
         # Process results
         if not res or res.count() < 1:
             return False
-
+        
+        password = base64.b64encode(hashlib.sha256(password).digest())
+    
         user = res[0] # Index 0 is guaranteed to exist
-        password_hash = user.get('password_hash')
+        password_hash = user.get('password_hash').encode('utf-8')
 
         if bcrypt.checkpw(password, password_hash):
             self.is_authenticated = True

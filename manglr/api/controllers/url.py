@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 
 from api.models.url import Url
-from api.util import *
+from api.util import APIResp, APIErrorResp, Defines
 
 api_url = Blueprint('api_url', __name__, url_prefix='/api/url')
 

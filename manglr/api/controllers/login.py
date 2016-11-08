@@ -1,11 +1,16 @@
-from flask import Blueprint
+from flask import Blueprint, request
+from flask_login import login_user
+from api.models.user import User
+from api.util import APIResp, APIErrorResp, Defines
+
+import hashlib, base64, random
 
 api_login = Blueprint('api_login', __name__, url_prefix='/api/login')
 
 
-@api_login('/')
+@api_login.route('/', methods=['GET', 'POST'])
 def login():
-    if not request.values.get('email') or request.values.get('password'): # If email and password is provided
+    if not request.values.get('email') or not request.values.get('password'): # If email and password is provided
         return APIErrorResp(Defines.ERROR_PARAM, 'Param "email" or "password"  not provided') 
     user = User(email=request.values.get('email'))
 
@@ -21,9 +26,19 @@ def login():
 
     return APIResp(Defines.SUCCESS_OK, retval)
 
-@api_login('/create')
+@api_login.route('/create', methods=['GET', 'POST'])
 def create():
-    pass
+    
+    if not request.values.get('email'):
+        return APIErrorResp(Defines.ERROR_PARAM, 'Param "email" not provided')
+
+    if not request.values.get('password'):
+        return APIErrorResp(Defines.ERROR_PARAM, 'Param "password" not provided')
+
+    new_user = User()
+    if new_user.create(request.values.get('email'), request.values.get('password')):
+        return APIResp(Defines.SUCCESS_CREATED, { 'email': request.values.get('email') })
+    return APIErrorResp(Defines.ERROR_EXISTS, { 'email': request.values.get('email') })
 
 def generate_hash_key(username, timestamp):
     """ @return: A hashkey for use to authenticate agains the API. """
