@@ -12,6 +12,10 @@ class User():
         self.is_authenticated = False
         self.is_anonymous = None
 
+        if email:
+            self._email = email
+            self.load()
+
     def create(self, email, password):
         res = api.DB.users.find({
             'email': email
@@ -41,7 +45,7 @@ class User():
         res = None
         if email or self._email:
             res = api.DB.users.find({
-                'email': self._email
+                'email': self._email or email
             }, { 'password_hash': 0 }).limit(1)
         
         # Process results

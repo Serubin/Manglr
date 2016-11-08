@@ -14,6 +14,9 @@ login = Blueprint('login', __name__, url_prefix='/login')
 
 api.LOGIN_MANAGER = LoginManager()
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User(email=user_id)
 
 def login_init(app):
     app.register_blueprint(api)
@@ -25,7 +28,4 @@ def login_init(app):
 @api.route('/')
 def api_index():
     return APIResp(200, None)
-
-def register_blueprints(app):
-
 
