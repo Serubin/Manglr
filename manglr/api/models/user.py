@@ -4,6 +4,7 @@ from pymongo import collection
 class User():
     
     def __init__(self, email=None):
+        self._id = None # Should never be exposed
         self._name = None
         self._email = None
         self._api_keys = []
@@ -36,7 +37,8 @@ class User():
             'email': self._email,
             'password_hash': self._password_hash,
             'api_keys': self._api_keys,
-            'timestamp': self._timestamp
+            'timestamp': self._timestamp,
+            'is_active': True
         })
         
         return True
@@ -56,13 +58,20 @@ class User():
         user = res[0] # Index 0 is guaranteed to exist
 
         # Save info to object
+        self._id = user.get('_id')
         self._email = user.get('email')
         self._name = user.get('name')
         self._api_keys = user.get('api_keys')
         self._timestamp = user.get('timestamp')
+        self.is_active = user.get('is_active')
+        self.is_anonymous = False
 
         return True
     
+    def getInteralId(self):
+        """ Returns internal id """
+        return self._id
+
     def getName(self):
         """ Returns username """
         return self._name

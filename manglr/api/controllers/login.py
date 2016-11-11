@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required, current_user
 from api.models.user import User
 from api.util import APIResp, APIErrorResp, Defines
 
@@ -10,19 +10,23 @@ api_login = Blueprint('api_login', __name__, url_prefix='/api/login')
 
 @api_login.route('/', methods=['GET', 'POST'])
 def login():
+
     if not request.values.get('email') or not request.values.get('password'): # If email and password is provided
         return APIErrorResp(Defines.ERROR_PARAM, 'Param "email" or "password"  not provided') 
+
     user = User(email=request.values.get('email'))
 
+    retval = {
+        'success': False
+    }
+
     if user.verifyPassword(request.values.get('password')):
+        user.is_authenticated = True
+
         login_user(user)
         retval = {
             'success': True
         }
-        return APIResp(Defines.SUCCESS_OK, retval)
-    retval = {
-        'success': False
-    }
 
     return APIResp(Defines.SUCCESS_OK, retval)
 
@@ -30,7 +34,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return APIResp(Defines.SUCCES_OK, {'success': True})
+    return APIResp(Defines.SUCCESS_OK, {'success': True})
 
 @api_login.route('/create', methods=['GET', 'POST'])
 def create():

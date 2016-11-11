@@ -1,5 +1,6 @@
 from flask import Blueprint, request
-
+from flask_login import current_user
+from api.models.user import User
 from api.models.url import Url
 from api.util import APIResp, APIErrorResp, Defines
 
@@ -13,10 +14,15 @@ def api_url_create():
 
     url_str = request.values.get('url')
     # END no URL
-
+    
+    #Get current user's id
+    user_id = None
+    if current_user:
+        user_id = current_user.getInteralId()
+    
     # Create new short
     url = Url()
-    res = url.create(url_str, request.remote_addr)
+    res = url.create(url_str, request.remote_addr, user_id=user_id)
     
     if not res: # If URL exists
         return APIErrorResp(Defines.ERROR_EXISTS, "Url exists")
@@ -32,11 +38,13 @@ def api_url_create():
 
 @api_url.route('/getall')
 def api_url_getall():
-    current_user = api.LOGIN_MANAGER.current_user.getEmail()
+    if not current_user:
+        APIErrorResp(Defines.ERROR_FORBIDDEN, "Must be logged in")
+    user_id = current_user.getInteralId()
 
-    urls = User.getUrlForUser(current_user)
-
-    return APIResp(Defines.SUCCESS_OK, urls)
+    urls = Url.getUrlForUser(user_id)
+    
+    return APIResp(Defines.SUCCESS_OK, {'urls': urls})
     
 @api_url.route('/<alias>')
 def api_url_get(alias):

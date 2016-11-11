@@ -1,4 +1,4 @@
-import time, hashlib, json # for ip hashing
+import time, hashlib, base64, json # for ip hashing
 import api
 
 from pymongo import collection
@@ -38,9 +38,10 @@ class Url:
 
         self._user_ip = ip
         self._user_id = user_id
-
+        
+        # Prevent duplicate urls for user
         res = api.DB.urls.find({
-            'id': self._id,
+            'url': self._url,
             'user_id': self._user_id
             }).limit(1)
 
@@ -234,11 +235,10 @@ class Url:
         pre_hash_str = url + str(ip) + str(time.time()) # String to be hashed
         pre_hash_str = pre_hash_str.encode('utf-8')
 
-        # Create hex hash
-        hasher = hashlib.sha224() 
-        hasher.update(pre_hash_str)
-        hash_str = hasher.hexdigest()
-        
+        # TODO allow custom hash functions
+        # Create hex hash 
+        hash_str = base64.b64encode(hashlib.sha256(pre_hash_str).digest()).lower()
+        hash_str = ''.join(ch for ch in hash_str if ch.isalnum())
         # Takes x characters from a random starting 
         # point in the string
         hash_final = hash_str[0:5] # TODO Add size to config
@@ -259,15 +259,36 @@ class Url:
         # return final
         return hash_final
 
+    def to_dict(self):
+        retval = {
+            'id': self._id
+        }
+
+        if self._url:
+            retval.update({'url': self._url})
+
+        if self._user_id: # TODO never expose, revist adding to dict
+            retval.update({'user_id': self._user_id})
+
+        if self._user_ip:
+            retval.update({'user_ip': self._user_ip})
+
+        if self._aliases:
+            retval.update({'aliases': self._aliases})
+        
+        if self._timestamp:
+            retval.update({'url': self._timestamp})
+
+        return retval
 
     def _constructObject(self):
         """ Constructs database object to be inserted """
         pass
 
     @staticmethod
-    def getUrlForUser(email):
+    def getUrlForUser(id):
         res = api.DB.urls.find({ 
-            'user_id': email
+            'user_id': id
         }, { 
             'id': 1,
             'url': 1
@@ -279,7 +300,7 @@ class Url:
             url = Url()
             url.setID(item.get('id'))
             url.setURL(item.get('url'))
-            urls.append(url)
+            urls.append(url.to_dict())
 
         return urls
 
