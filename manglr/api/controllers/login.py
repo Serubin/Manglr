@@ -31,12 +31,14 @@ def login():
     return APIResp(Defines.SUCCESS_OK, retval)
 
 @api_login.route('/logout')
+@api_login.route('/logout/')
 @login_required
 def logout():
     logout_user()
     return APIResp(Defines.SUCCESS_OK, {'success': True})
 
 @api_login.route('/create', methods=['GET', 'POST'])
+@api_login.route('/create/', methods=['GET', 'POST'])
 def create():
     
     if not request.values.get('email'):

@@ -28,7 +28,7 @@ class User():
 
         self._email = email
         self._password_hash = bcrypt.hashpw(
-                base64.b64encode(hashlib.sha256(password).digest()),
+                base64.b64encode(hashlib.sha256(password.encode('utf-8')).digest()),
                 bcrypt.gensalt()
             )
         self._timestamp = int(time.time())
@@ -98,11 +98,11 @@ class User():
         if not res or res.count() < 1:
             return False
         
-        password = base64.b64encode(hashlib.sha256(password).digest())
+        password = base64.b64encode(hashlib.sha256(password.encode('utf-8')
+).digest())
     
         user = res[0] # Index 0 is guaranteed to exist
-        password_hash = user.get('password_hash').encode('utf-8')
-
+        password_hash = user.get('password_hash')
         if bcrypt.checkpw(password, password_hash):
             self.is_authenticated = True
             return True

@@ -6,7 +6,8 @@ from api.util import APIResp, APIErrorResp, Defines
 
 api_url = Blueprint('api_url', __name__, url_prefix='/api/url')
 
-@api_url.route('/create')
+@api_url.route('/create', methods=['GET', 'POST'])
+@api_url.route('/create/', methods=['GET', 'POST'])
 def api_url_create():
     
     if not request.values.get('url'): # If no URL is provided
@@ -37,6 +38,7 @@ def api_url_create():
     return APIResp(Defines.SUCCESS_CREATED, retval) 
 
 @api_url.route('/getall')
+@api_url.route('/getall/')
 def api_url_getall():
     if not current_user:
         APIErrorResp(Defines.ERROR_FORBIDDEN, "Must be logged in")
@@ -47,6 +49,7 @@ def api_url_getall():
     return APIResp(Defines.SUCCESS_OK, {'urls': urls})
     
 @api_url.route('/<alias>')
+@api_url.route('/<alias>/')
 def api_url_get(alias):
     
     url = Url(alias=alias)
@@ -63,7 +66,8 @@ def api_url_get(alias):
     return APIResp(Defines.SUCCESS_OK, retval)
 
 
-@api_url.route('/<url_id>/alias/add')
+@api_url.route('/<url_id>/alias/add', methods=['GET', 'POST'])
+@api_url.route('/<url_id>/alias/add/', methods=['GET', 'POST'])
 def api_url_alias_add(url_id):
     
     if not request.values.get('alias'): # If no Alias is provided
@@ -85,7 +89,8 @@ def api_url_alias_add(url_id):
 
     return APIResp(Defines.SUCCESS_CREATED, retval)
 
-@api_url.route('/<url_id>/alias/rem')
+@api_url.route('/<url_id>/alias/remove', methods=['GET', 'POST'])
+@api_url.route('/<url_id>/alias/remove/', methods=['GET', 'POST'])
 def api_url_alias_rem(url_id):
     
     if not request.values.get('alias'): # If no Alias is provided
@@ -108,6 +113,7 @@ def api_url_alias_rem(url_id):
     return APIResp(Defines.SUCCESS_CREATED, retval)
 
 
+@api_url.route('/<url_id>/alias')
 @api_url.route('/<url_id>/alias/')
 def api_alias_get(url_id):
     

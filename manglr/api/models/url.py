@@ -180,7 +180,7 @@ class Url:
             {
                 '$set': self._aliases
             }, 
-            return_document=ReturnDocument.AFTER
+            return_document=collection.ReturnDocument.AFTER
         )
 
         return True
@@ -213,10 +213,10 @@ class Url:
                 '$push': {
                     'redirects' : {'ip': ip, 'user_id': user}
                 }
-            }, return_document=ReturnDocument.AFTER)
+            })
 
         
-        if url == None or url.count < 1: # Check for result
+        if not url: # Check for result
             return False
         
         return url # Return result
@@ -237,7 +237,10 @@ class Url:
 
         # TODO allow custom hash functions
         # Create hex hash 
-        hash_str = base64.b64encode(hashlib.sha256(pre_hash_str).digest()).lower()
+        hash_str = base64.b64encode(
+                hashlib.sha256(pre_hash_str).digest()
+            ).lower().decode('utf-8')
+
         hash_str = ''.join(ch for ch in hash_str if ch.isalnum())
         # Takes x characters from a random starting 
         # point in the string
