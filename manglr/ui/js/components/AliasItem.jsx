@@ -2,8 +2,12 @@
 class AliasItem extends React.Component {
 
     deleteElement() {
-        // requires prop.urlId
-        // TODO ajax delete call
+
+        $.ajax(API_BASE + "/urls/" + this.prop.urlId + "/alias/remove", {
+            method: "POST",
+            data: { "alias": this.prop.alias },
+        });
+
     }
 
     render() {
