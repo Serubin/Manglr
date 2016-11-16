@@ -14,6 +14,9 @@ class UrlItem extends React.Component {
 
     deleteElement() {
         //TODO ajax delete call
+        $.ajax(API_BASE + "/urls/" + this.prop.urlId + "/delete", {
+            method: "POST",
+        });
     }
 
     render() {
