@@ -294,7 +294,8 @@ class Url:
             'user_id': id
         }, { 
             'id': 1,
-            'url': 1
+            'url': 1,
+            'alias': 1,
         })
     
         urls = []
@@ -303,6 +304,7 @@ class Url:
             url = Url()
             url.setID(item.get('id'))
             url.setURL(item.get('url'))
+            url.setAliases(item.get('alias'))
             urls.append(url.to_dict())
 
         return urls

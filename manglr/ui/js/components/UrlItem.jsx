@@ -32,7 +32,7 @@ class UrlItem extends React.Component {
                         </button>
                     </td>
                 </tr>
-                <tr id={ this.props.urlId + "-aliases" }>
+                <tr id={ this.props.urlId + "-aliases" } className="aliases">
                     <ul>
                         {aliasList}
                     <ul>
