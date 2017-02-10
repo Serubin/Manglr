@@ -27,7 +27,7 @@ def APIErrorResp(result, msg):
     return APIResp(result, retval)
 
 def APIResp(result, data):
-    retval = {'res': result, 'version': getVersionHash() }
+    retval = {'result': result, 'version': getVersionHash() }
     if data != None:
         retval.update(data)
     

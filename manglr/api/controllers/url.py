@@ -6,26 +6,29 @@ from api.util import APIResp, APIErrorResp, Defines
 
 api_url = Blueprint('api_url', __name__, url_prefix='/api/url')
 
-@api_url.route('/create', methods=['GET', 'POST'])
-@api_url.route('/create/', methods=['GET', 'POST'])
+@api_url.route('', methods=['POST'])
+@api_url.route('/', methods=['POST'])
 def api_url_create():
     
-    if not request.values.get('url'): # If no URL is provided
-        return APIErrorResp(Defines.ERROR_PARAM, 'Param "url" not provided') 
+    data = request.get_json()
 
-    url_str = request.values.get('url')
-    # END no URL
-    
+    if not data.get('url'): # If no URL is provided
+        return APIErrorResp(Defines.ERROR_PARAM, '"url" not provided') 
+
+    data_url = data.get('url')
+    data_aliases = data.get('aliases')
+
     #Get current user's id
-    user_id = None
+    user_id = None 
     if current_user:
         user_id = current_user.getInteralId()
     
     # Create new short
     url = Url()
-    res = url.create(url_str, request.remote_addr, user_id=user_id)
+    res = url.create(url_str, request.remote_addr, 
+                    aliases=data_aliases, user_id=user_id)
     
-    if not res: # If URL exists
+    if not res: # If URL exists TODO, should return existing url if it belongs to user
         return APIErrorResp(Defines.ERROR_EXISTS, "Url exists")
     
     # Return values
@@ -37,9 +40,9 @@ def api_url_create():
     
     return APIResp(Defines.SUCCESS_CREATED, retval) 
 
-@api_url.route('/getall')
-@api_url.route('/getall/')
-def api_url_getall():
+@api_url.route('', methods=['GET'])
+@api_url.route('/')
+def api_url_get_all():
     if not current_user:
         APIErrorResp(Defines.ERROR_FORBIDDEN, "Must be logged in")
     user_id = current_user.getInteralId()
@@ -48,14 +51,14 @@ def api_url_getall():
     
     return APIResp(Defines.SUCCESS_OK, {'urls': urls})
     
-@api_url.route('/<alias>')
-@api_url.route('/<alias>/')
+@api_url.route('/<alias>', methods=['GET'])
+@api_url.route('/<alias>/', methods=['GET'])
 def api_url_get(alias):
     
     url = Url(alias=alias)
     
     if not url.getURL():
-        return APIErrorResp(Defines.ERROR_NOT_FOUND, "Url does not exist")
+        return APIErrorResp(Defines.ERROR_NOT_FOUND, "url or alias does not exist")
 
     retval = {
         'id': url.getID(),
