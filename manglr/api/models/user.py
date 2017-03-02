@@ -3,19 +3,19 @@ from pymongo import collection
 
 class User():
     
-    def __init__(self, email=None):
+    def __init__(self, email=None, load=True):
         self._id = None # Should never be exposed
         self._name = None
-        self._email = None
+        self._email = email
         self._api_keys = []
         self._timestamp = None
         self.is_active = None # Flask-Login (is active account)
 
         self.is_authenticated = False
+        self.is_api_session = False
         self.is_anonymous = None
 
-        if email:
-            self._email = email
+        if email and load:
             self.load()
 
     def create(self, email, password):
@@ -84,6 +84,45 @@ class User():
         """ Flask Login, get username """
         return self.getEmail()
 
+    def add_api_token(self, name, token):
+        if not self._email:
+            return False
+
+        res = api.DB.users.find({
+            'email': self._email,
+            'api_tokens.name': name
+        }).limit(1)
+
+        print(res.count())
+        if not res or res.count() >= 1:
+            return False
+
+        res = api.DB.users.find_one_and_update({
+                'email': self._email
+            },
+            {
+                '$addToSet': {
+                    'api_tokens' : {'name': name, 'token': token }
+                }
+            })
+
+        return True
+
+
+    def remove_api_token(self, name):
+        if not self._email:
+            return False
+
+        res = api.DB.users.find_one_and_update({
+                'email': self._email
+            },
+            {
+                '$pull': {
+                    'api_tokens' : {'name': name }
+                }
+            })
+        
+        return True
     def verifyPassword(self, password):
         if not self._email:
             return False
@@ -109,4 +148,24 @@ class User():
 
         return False
 
-    
+    @staticmethod
+    def loadFromToken(token, load=False):
+        res = api.DB.urls.find({ 'api_tokens': { 
+                '$in': [ { 'token': token } ] 
+            } 
+            }, { 'email': 1  }).limit(1)
+
+        # Process results
+        if not res or res.count() < 1:
+            return False
+
+        user = res[0] # Index 0 is guaranteed to exist
+
+        user = User(user.get('email'), load)
+        user.is_api_session = True
+        user.is_authenticated = True
+        user.is_anonymous = False
+
+        return user
+
+

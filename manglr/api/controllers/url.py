@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 from api.models.user import User
 from api.models.url import Url
 from api.util import APIResp, APIErrorResp, Defines
@@ -20,16 +20,21 @@ def api_url_create():
 
     #Get current user's id
     user_id = None 
-    if current_user:
+    if current_user.is_authenticated:
         user_id = current_user.getInteralId()
     
     # Create new short
     url = Url()
-    res = url.create(url_str, request.remote_addr, 
-                    aliases=data_aliases, user_id=user_id)
+    res = url.create(data_url, request.remote_addr, user_id=user_id)
     
     if not res: # If URL exists TODO, should return existing url if it belongs to user
         return APIErrorResp(Defines.ERROR_EXISTS, "Url exists")
+
+    failed_aliases = []
+
+    for alias in data_aliases:
+        if not url.addAlias(alias):
+            failed_aliases.append(alias)
     
     # Return values
     retval = {
@@ -38,13 +43,16 @@ def api_url_create():
         'alias': url.getAliases()
     }
     
+    if len(failed_aliases) >= 1:
+        retval.update({'failed_alias': failed_aliases})
+
     return APIResp(Defines.SUCCESS_CREATED, retval) 
 
 @api_url.route('', methods=['GET'])
 @api_url.route('/')
+@login_required
 def api_url_get_all():
-    if not current_user:
-        APIErrorResp(Defines.ERROR_FORBIDDEN, "Must be logged in")
+
     user_id = current_user.getInteralId()
 
     urls = Url.getUrlForUser(user_id)
@@ -63,20 +71,34 @@ def api_url_get(alias):
     retval = {
         'id': url.getID(),
         'url': url.getURL(),
+        'aliases': url.getAliases(),
         'created': url.getTimestamp()
     }
 
     return APIResp(Defines.SUCCESS_OK, retval)
 
+@api_url.route('/<url_id>', methods=['DELETE'])
+@api_url.route('/<url_id>/', methods=['DELETE'])
+def api_url_delete(url_id):
+    url = Url(id=url_id)
+    url.remove()
+ 
+    retval = {
+        'removed': True
+        }
 
-@api_url.route('/<url_id>/alias/add', methods=['GET', 'POST'])
-@api_url.route('/<url_id>/alias/add/', methods=['GET', 'POST'])
+    return APIResp(Defines.SUCCESS_NO_CONTENT, retval)
+
+@api_url.route('/<url_id>/alias', methods=['POST'])
+@api_url.route('/<url_id>/alias/', methods=['POST'])
 def api_url_alias_add(url_id):
-    
-    if not request.values.get('alias'): # If no Alias is provided
-        return APIErrorResp(Defines.ERROR_PARAM, 'Param "alias" not provided')
 
-    alias = request.values.get('alias')
+    data = request.get_json()
+    
+    if not data.get('alias'): # If no Alias is provided
+        return APIErrorResp(Defines.ERROR_PARAM, '"alias" not provided')
+
+    alias = data.get('alias')
 
     url = Url(id=url_id)
     
@@ -92,14 +114,19 @@ def api_url_alias_add(url_id):
 
     return APIResp(Defines.SUCCESS_CREATED, retval)
 
-@api_url.route('/<url_id>/alias/remove', methods=['GET', 'POST'])
-@api_url.route('/<url_id>/alias/remove/', methods=['GET', 'POST'])
+@api_url.route('/<url_id>/alias', methods=['DELETE'])
+@api_url.route('/<url_id>/alias/', methods=['DELETE'])
 def api_url_alias_rem(url_id):
     
-    if not request.values.get('alias'): # If no Alias is provided
-        return APIErrorResp(Defines.ERROR_PARAM, 'Param "alias" not provided')
+    data = request.get_json()
 
-    alias = request.values.get('alias')
+    if not data.get('alias'): # If no Alias is provided
+        return APIErrorResp(Defines.ERROR_PARAM, '"alias" not provided')
+
+    alias = data.get('alias')
+
+    if url_id == alias:
+        return APIErrorResp(Defines.ERROR_FORBIDDEN, "url id cannot be removed")
 
     url = Url(id=url_id)
     
@@ -116,8 +143,8 @@ def api_url_alias_rem(url_id):
     return APIResp(Defines.SUCCESS_CREATED, retval)
 
 
-@api_url.route('/<url_id>/alias')
-@api_url.route('/<url_id>/alias/')
+@api_url.route('/<url_id>/alias', methods=['GET'])
+@api_url.route('/<url_id>/alias/', methods=['GET'])
 def api_alias_get(url_id):
     
     url = Url(id=url_id)
@@ -126,7 +153,6 @@ def api_alias_get(url_id):
         return APIErrorResp(Defines.ERROR_NOT_FOUND, "Url does not exist")
 
     retval = {
-        'id': url.getID(),
         'aliases': url.getAliases()
     }
 

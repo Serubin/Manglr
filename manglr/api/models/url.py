@@ -48,9 +48,9 @@ class Url:
         if res.count() >= 1:
             return False
         
-        if len(aliases) > 0:
-            self._aliases = self._aliases + aliases
-
+        if isinstance(aliases, str):
+            aliases = [ aliases ]
+        
         dbres = api.DB.urls.insert_one({ # dump to db
                 'id': self._id,
                 'url': self._url,
@@ -60,7 +60,9 @@ class Url:
                 'redirects': [],
                 'timestamp': int(time.time())
             })
-        
+ 
+
+
         return True
     
     def load(self, alias=None, id=None):
@@ -101,6 +103,15 @@ class Url:
         
         return True
 
+    def remove(self):
+        
+        if not self._id:
+            return False
+        
+        api.DB.urls.find_one_and_delete({ 'id': self._id })
+
+        return True
+    
     def getID(self):
         """ Getter for id """
         return self._id
@@ -146,8 +157,8 @@ class Url:
             },{
                 '$push': { 'aliases': alias  }
             })
-
-        print(json.dumps(res, default=lambda x: str(x)))
+        
+        self._aliases.append(alias) # Add to object
 
         return True
 
@@ -227,6 +238,7 @@ class Url:
             return False
 
         return self._timestamp
+
     def _createRandomHash(self, url, ip, attempt):
         """ Creates a random hash from the url, ip, and unix timestamp.
             Acts recursively until a unique id is created
