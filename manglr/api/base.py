@@ -31,7 +31,12 @@ def load_user_from_request(request):
         return User.loadFromToken(api_key)
 
     api_key = request.headers.get('Authorization')
+    
+    if not api_key:
+        return None
+
     api_key = api_key.replace('Basic ', '', 1)
+    
     try:
         api_key = base64.b64decode(api_key)
     except TypeError:
