@@ -1,0 +1,79 @@
+swagger: '2.0'
+info:
+  description: Mangler end-point
+  version: 0.0.1-dev
+  title: Mangler
+  license:
+    name: MIT
+basePath: /v1
+tags:
+  - name: url
+    description: URL Management
+  - name: analytics
+    description: URL Analytics
+  - name: user
+    description: User Management
+schemes:
+  - https
+paths:
+  /url:
+    post:
+      tags:
+        - url
+      summary: Add new url
+      description: ''
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Long URL
+          required: true
+          schema:
+            $ref: '#/definitions/NewUrl'
+      responses:
+        '201':
+          description: Success Created
+          schema:
+            $ref: '#/definitions/NewUrlResponse'
+
+definitions:
+  NewUrl:
+    type: object
+    properties:
+      url:
+        type: string
+        format: url
+      aliases:
+        type: array
+        items:
+          type: string
+
+  NewUrlResponse:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/ApiResponse'
+      - properties:
+          id:
+            type: string
+            description: "Hash-ID"
+          url:
+            type: string
+            description: "Original url"
+          alias:
+            type: array
+            description: "All aliases (Including original ID)"
+            items:
+              type: string
+
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      version:
+        type: string
+
