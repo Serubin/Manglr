@@ -31,7 +31,7 @@ Mangler - Solomon Rubin
 The following Software Requirements Specification has been accepted and approved by the following:
 | Signature | Printed Name | Title | Date|
 |-----------|--------------|-------|-----|
-|    ...       | Solomon Rubin |   Working Document Approval    |  4.10.18   |
+| ...       | Solomon Rubin | Working Document Approval    |  4.10.18   |
 
 
 **Acknowledgements:**
@@ -42,12 +42,59 @@ Sections of this document are based upon the IEEE Guide to Software Requirements
 					
 
 **Table of Contents**
+<!-- generated with markdown-toc -->
+<!-- toc -->
 
+* [1. **Introduction**](#1-introduction)
+  * [1.1 **Purpose**](#11-purpose)
+  * [1.2 **Scope**](#12-scope)
+  * [1.3 **Definitions, Acronyms, and Abbreviations**](#13-definitions-acronyms-and-abbreviations)
+  * [1.4 **References**](#14-references)
+  * [1.5 **Overview**](#15-overview)
+* [2. **General Description**](#2-general-description)
+  * [2.1 **Product Perspective**](#21-product-perspective)
+  * [2.2 **Product Functions**](#22-product-functions)
+  * [2.3 **User Characteristics**](#23-user-characteristics)
+  * [2.4 **General Constraints**](#24-general-constraints)
+  * [2.5 **Assumptions and Dependencies**](#25-assumptions-and-dependencies)
+* [3. **Specific Requirements**](#3-specific-requirements)
+  * [3.1 **External Interface Requirements**](#31-external-interface-requirements)
+    * [3.1.1 **User Interfaces**](#311-user-interfaces)
+    * [3.1.2 **Hardware Interfaces**](#312-hardware-interfaces)
+    * [3.1.3 **Software Interfaces**](#313-software-interfaces)
+      * [3.1.3.1 **Hard Requirements**](#3131-hard-requirements)
+      * [3.1.3.2 **Soft Requirements**](#3132-soft-requirements)
+  * [3.2 **Functional Requirements**](#32-functional-requirements)
+    * [3.2.1 **URL Backend**](#321-url-backend)
+    * [3.2.2 **User-Interface**](#322-user-interface)
+      * [3.2.2.2 **General Requirements**](#3222-general-requirements)
+  * [3.3 **Use Cases**](#33-use-cases)
+    * [3.3.1 **Use Case #1**](#331-use-case-%231)
+    * [3.3.2 **Use Case #2**](#332-use-case-%232)
+  * [3.4 **Classes / Objects**](#34-classes--objects)
+    * [3.4.1 ****](#341-)
+    * [3.4.2 ****](#342-)
+  * [3.5 **Non-Functional Requirements**](#35-non-functional-requirements)
+    * [3.5.1 **Performance**](#351-performance)
+    * [3.5.2 **Reliability**](#352-reliability)
+    * [3.5.3 **Availability**](#353-availability)
+    * [3.5.4 **Security**](#354-security)
+    * [3.5.5 **Maintainability**](#355-maintainability)
+    * [3.5.6 **Portability**](#356-portability)
+  * [3.6 **Inverse Requirements**](#36-inverse-requirements)
+  * [3.7 **Design Constraints**](#37-design-constraints)
+  * [3.8 **Logical Database Requirements**](#38-logical-database-requirements)
+  * [3.9 **Other Requirements**](#39-other-requirements)
+* [4. **Analysis Models**](#4-analysis-models)
+  * [4.1 **Sequence Diagrams**](#41-sequence-diagrams)
+  * [4.3 **Data Flow Diagrams (DFD)**](#43-data-flow-diagrams-dfd)
+  * [4.2 **State-Transition Diagrams (STD)**](#42-state-transition-diagrams-std)
+* [5. **Change Management Process**](#5-change-management-process)
+* [A. **Appendices**](#a-appendices)
+  * [A.1 **Appendix 1 - Figures**](#a1-appendix-1---figures)
+  * [A.2 **Appendix 2**](#a2-appendix-2)
 
-[TOC]
-
-
-
+<!-- tocstop -->
 
 ----
 
