@@ -1,3 +1,4 @@
+
 # **Software Requirements Specification** : Mangler
 
 Mangler - Solomon Rubin
@@ -100,39 +101,23 @@ Sections of this document are based upon the IEEE Guide to Software Requirements
 
 ## 1. **Introduction**
 
-_This document is to specify the The introduction to the Software Requirement Specification (SRS) document should provide an overview of the complete SRS document.  While writing this document please remember that this document should contain all of the information needed by a software engineer to adequately design and implement the software product described by the requirements listed in this document.   (Note: the following subsection annotates are largely taken  from the IEEE Guide to SRS)._
-
 
 ### 1.1 **Purpose**
 
-The purpose of this document is to create a modern, enterprise level, URL Shortener. This will explain the technical planning related to the development of Mangler.
+The purpose of this document is to describe the design and  creation a modern, enterprise level, URL Shortener. This will explain the technical planning related to the development of Mangler.
 
 
 ### 1.2 **Scope**
 
-_This subsection should:_
 
+Mangler will be a URL shortener with "advanced" features to enable it to be competitive among other current URL shorteners on the market. Mangler will also be Free and Open Source which will give an additional edge in an era of tracking and data collection. 
 
-    _(1)	 Identify the software product(s) to be produced by name; for example, Host DBMS, Report Generator, etc_
-
-
-    _(2)	Explain what the software product(s) will, and, if necessary, will not do_
-
-
-    _(3)	Describe the application of the software being specified. As a portion of this, it should:_
-
-
-    _(a) Describe all relevant benefits, objectives, and goals as precisely as possible. For example, to say that one goal is to provide effective reporting capabilities is not as good as saying parameter-driven, user-definable reports with a 2 h turnaround and on-line entry of user parameters._
-
-
-    _(b) Be consistent with similar statements in higher-level specifications (for example, the System Requirement Specification) , if they exist.What is the scope of this software product._
+Mangler will offer "advanced" features such as aliasing of URLS, per-url/per-alias analytics (that maintain privacy), URL blacklisting, and others. Mangler will function within a set of Micro-services to maintain a scalable and easily deployable solution.
 
 
 ### 1.3 **Definitions, Acronyms, and Abbreviations**
 
-This subsections provide the definitions of all terms, acronyms, and abbreviations required to properly interpret this document.
-
-
+*This subsections provide the definitions of all terms, acronyms, and abbreviations required to properly interpret this document.*
 
 *   id - (url id) a primary id to identify the url, denoted in url by `<domain>/3d7sd8`
 *   alias - (url alias) a secondary short 'id', generally custom, such as `<domain>/my-alias`
@@ -140,36 +125,18 @@ This subsections provide the definitions of all terms, acronyms, and abbreviatio
 
 ### 1.4 **References**
 
-_This subsection should:_
-
-
-    _(1)	Provide a complete list of all documents referenced elsewhere in the SRS, or in a separate, specified document._
-
-
-    _(2)	Identify each document by title, report number - if applicable - date, and publishing organization._
-
-
-    _(3)	Specify the sources from which the references can be obtained. _
-
-_This information may be provided by reference to an appendix or to another document._
+* AuthLib: https://docs.authlib.org/en/latest/
+* Flask: flask.pocoo.org/docs/1.0/api/
 
 
 ### 1.5 **Overview**
 
-_This subsection should:_
-
-
-    _(1) Describe what the rest of the SRS contains_
-
-
-    _(2) Explain how the SRS is organized._
+The reminder of this document contains the more specific technical specifications and requirements for mangler. This document **does not** focus on business context.
 
 
 ## 2. **General Description**
 
-Mangler will be a URL shortener with "advanced" features to enable it to be competitive among other current URL shorteners on the market. Mangler will also be Free and Open Source which will give an additional edge in an era of tracking and data collection. 
 
-Mangler will offer "advanced" features such as aliasing of URLS, per-url/per-alias analytics (that maintain privacy), URL blacklisting, and others. Mangler will function within a set of Micro-services to maintain a scalable and easily deployable solution.
 
 ### 2.1 **Product Perspective**
 
@@ -243,30 +210,29 @@ Due to the microservice nature of the application design, it should be fairly si
 
 For now, there are soft requirements on the following:
 
-* OAuth2: authlib - both for server and client
+* Flask: Python http library
+* OAuth2: authlib - oath library for both for server and client
 *  HTTP Gateway: Nginx 
 
 
 ### 3.2 **Functional Requirements**
 
-> _This section describes specific features of the software project.  If desired, some requirements may be specified in the use-case format and listed in the Use Cases Section._
-
 
 #### 3.2.1 **URL Backend**
+The URL Backend will...
+##### 3.2.1.1 Introduction
 
-#####3.2.1.1 Introduction
+##### 3.2.1.2 Inputs
 
-#####3.2.1.2 Inputs
+##### 3.2.1.3 Processing
 
-#####3.2.1.3 Processing
+##### 3.2.1.4 Outputs
 
-#####3.2.1.4 Outputs
-
-#####3.2.1.5 Error Handling
+##### 3.2.1.5 Error Handling
 
 
 #### 3.2.2 **User-Interface**
-#####3.2.2.1 **Introduction**
+##### 3.2.2.1 **Introduction**
 User-interface will be treated as it's own "microservice" and house the serving mechanism as well as the actual user interface. Various user interfaces will be required to provide a front-end for critical functions as detailed below.
 
 
@@ -282,6 +248,21 @@ User-interface will be treated as it's own "microservice" and house the serving 
 *   URL Detail
 *   URL Analytics
 *   Account Management
+
+
+#### 3.2.3 **OAuth 2 Server**
+
+##### 3.2.3.1 Introduction
+The Authentication server will implement OAuth 2 and be used to authenticate all users and clients accessing the system. This system will be treated as a microservice and will run independently of core system. The system will use [Lepture's AuthLib](https://github.com/lepture/authlib) to implement the OAuth 2 Server. AuthLib will also be used to implement the receiving client to be authenticated.
+
+##### 3.2.3.2 Inputs
+Refer to https://docs.authlib.org/en/latest/flask/oauth2.html#authorization-server
+
+##### 3.2.3.3 Processing
+Refer to https://docs.authlib.org/en/latest/flask/oauth2.html#authorization-server
+
+##### 3.2.3.4 Outputs
+Refer to https://docs.authlib.org/en/latest/flask/oauth2.html#authorization-server
 
 
 
@@ -376,10 +357,6 @@ _Identify and describe the process that will be used to update the SRS, as neede
 
 
 ## A. **Appendices**
-
-_Appendices may be used to provide additional (and hopefully helpful) information.  If present, the SRS should explicitly state whether the information contained within an appendix is to be considered as a part of the SRS's overall set of requirements._
-
-_Example Appendices could include (initial) conceptual documents for the software project, marketing materials, minutes of meetings with the customer(s), etc._
 
 
 ### A.1 **Appendix 1 - Figures**
