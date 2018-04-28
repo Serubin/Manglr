@@ -97,11 +97,6 @@ Sections of this document are based upon the IEEE Guide to Software Requirements
   * [3.7 **Design Constraints**](#37-design-constraints)
   * [3.8 **Logical Database Requirements**](#38-logical-database-requirements)
   * [3.9 **Other Requirements**](#39-other-requirements)
-- [4. **Analysis Models**](#4-analysis-models)
-  * [4.1 **Sequence Diagrams**](#41-sequence-diagrams)
-  * [4.3 **Data Flow Diagrams (DFD)**](#43-data-flow-diagrams-dfd)
-  * [4.2 **State-Transition Diagrams (STD)**](#42-state-transition-diagrams-std)
-- [5. **Change Management Process**](#5-change-management-process)
 - [A. **Appendices**](#a-appendices)
   * [A.1 **Appendix 1 - Figures**](#a1-appendix-1---figures)
   * [A.2 **Appendix 2**](#a2-appendix-2)
@@ -231,11 +226,11 @@ For now, there are soft requirements on the following:
 
 #### 3.2.1 **URL Backend**
 ##### 3.2.1.1 Introduction
-The URL Backend will provide the core functionality of shortening, tracking, and redirecting URLs. 
+The URL Backend will provide the core functionality of shortening, tracking, and redirecting URLs. The backend will function as an API RESTful endpoint **only** and communicate with a database for storage. All clients will function through the RESTful API with the exception of redirection which will be a direct 301/302 HTTP response to a web-client URL request.
 ##### 3.2.1.2 Inputs
 [Refer to Swagger](swagger.yml)
 ##### 3.2.1.3 Processing
-N/A
+[Refer to Develop branch](https://github.com/Serubin/Manglr/tree/develop)
 ##### 3.2.1.4 Outputs
 [Refer to Swagger](swagger.yml)
 ##### 3.2.1.5 Error Handling
@@ -345,25 +340,6 @@ _Will a database be used?  If so, what logical requirements exist for data forma
 ### 3.9 **Other Requirements**
 
 _Catchall section for any additional requirements._
-
-
-## 4. **Analysis Models**
-
-_List all analysis models used in developing specific requirements previously given in this SRS.  Each model should include an introduction and a narrative description.  Furthermore, each model should be traceable the SRS's requirements._
-
-
-### 4.1 **Sequence Diagrams**
-
-
-### 4.3 **Data Flow Diagrams (DFD)**
-
-
-### 4.2 **State-Transition Diagrams (STD)**
-
-
-## 5. **Change Management Process**
-
-_Identify and describe the process that will be used to update the SRS, as needed, when project scope or requirements change.  Who can submit changes and by what means, and how will these changes be approved._
 
 
 ## A. **Appendices**
