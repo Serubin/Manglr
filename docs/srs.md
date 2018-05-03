@@ -46,58 +46,54 @@ Sections of this document are based upon the IEEE Guide to Software Requirements
 
 <!-- toc -->
 
-- [1. **Introduction**](#1-introduction)
+* [1. **Introduction**](#1-introduction)
   * [1.1 **Purpose**](#11-purpose)
   * [1.2 **Scope**](#12-scope)
   * [1.3 **Definitions, Acronyms, and Abbreviations**](#13-definitions-acronyms-and-abbreviations)
   * [1.4 **References**](#14-references)
   * [1.5 **Overview**](#15-overview)
-- [2. **General Description**](#2-general-description)
+* [2. **General Description**](#2-general-description)
   * [2.1 **Product Perspective**](#21-product-perspective)
   * [2.2 **Product Functions**](#22-product-functions)
   * [2.3 **User Characteristics**](#23-user-characteristics)
   * [2.4 **General Constraints**](#24-general-constraints)
   * [2.5 **Assumptions and Dependencies**](#25-assumptions-and-dependencies)
-- [3. **Specific Requirements**](#3-specific-requirements)
+* [3. **Specific Requirements**](#3-specific-requirements)
   * [3.1 **External Interface Requirements**](#31-external-interface-requirements)
-    + [3.1.1 **User Interfaces**](#311-user-interfaces)
-    + [3.1.2 **Hardware Interfaces**](#312-hardware-interfaces)
-    + [3.1.3 **Software Interfaces**](#313-software-interfaces)
-      - [3.1.3.1 **Hard Requirements**](#3131-hard-requirements)
-      - [3.1.3.2 **Soft Requirements**](#3132-soft-requirements)
+    * [3.1.1 **User Interfaces**](#311-user-interfaces)
+    * [3.1.2 **Hardware Interfaces**](#312-hardware-interfaces)
+    * [3.1.3 **Software Interfaces**](#313-software-interfaces)
+      * [3.1.3.1 **Hard Requirements**](#3131-hard-requirements)
+      * [3.1.3.2 **Soft Requirements**](#3132-soft-requirements)
   * [3.2 **Functional Requirements**](#32-functional-requirements)
-    + [3.2.1 **URL Backend**](#321-url-backend)
-      - [3.2.1.1 Introduction](#3211-introduction)
-      - [3.2.1.2 Inputs](#3212-inputs)
-      - [3.2.1.3 Processing](#3213-processing)
-      - [3.2.1.4 Outputs](#3214-outputs)
-      - [3.2.1.5 Error Handling](#3215-error-handling)
-    + [3.2.2 **User-Interface**](#322-user-interface)
-      - [3.2.2.1 **Introduction**](#3221-introduction)
-      - [3.2.2.2 **General Requirements**](#3222-general-requirements)
-    + [3.2.3 **OAuth 2 Server**](#323-oauth-2-server)
-      - [3.2.3.1 Introduction](#3231-introduction)
-      - [3.2.3.2 Inputs](#3232-inputs)
-      - [3.2.3.3 Processing](#3233-processing)
-      - [3.2.3.4 Outputs](#3234-outputs)
+    * [3.2.1 **URL Backend**](#321-url-backend)
+      * [3.2.1.1 Introduction](#3211-introduction)
+      * [3.2.1.2 Inputs](#3212-inputs)
+      * [3.2.1.3 Processing](#3213-processing)
+      * [3.2.1.4 Outputs](#3214-outputs)
+      * [3.2.1.5 Error Handling](#3215-error-handling)
+    * [3.2.2 **User-Interface**](#322-user-interface)
+      * [3.2.2.1 **Introduction**](#3221-introduction)
+      * [3.2.2.2 **General Requirements**](#3222-general-requirements)
+    * [3.2.3 **OAuth 2 Server**](#323-oauth-2-server)
+      * [3.2.3.1 Introduction](#3231-introduction)
+      * [3.2.3.2 Inputs](#3232-inputs)
+      * [3.2.3.3 Processing](#3233-processing)
+      * [3.2.3.4 Outputs](#3234-outputs)
   * [3.3 **Use Cases**](#33-use-cases)
-    + [3.3.1 **Use Case #1**](#331-use-case-%231)
-    + [3.3.2 **Use Case #2**](#332-use-case-%232)
   * [3.4 **Classes / Objects**](#34-classes--objects)
-    + [3.4.1 ****](#341-)
-    + [3.4.2 ****](#342-)
   * [3.5 **Non-Functional Requirements**](#35-non-functional-requirements)
-    + [3.5.1 **Performance**](#351-performance)
-    + [3.5.2 **Reliability**](#352-reliability)
-    + [3.5.3 **Availability**](#353-availability)
-    + [3.5.4 **Security**](#354-security)
-    + [3.5.5 **Maintainability**](#355-maintainability)
-    + [3.5.6 **Portability**](#356-portability)
+    * [3.5.1 **Performance**](#351-performance)
+    * [3.5.2 **Reliability**](#352-reliability)
+    * [3.5.3 **Availability**](#353-availability)
+    * [3.5.4 **Security**](#354-security)
+    * [3.5.5 **Maintainability**](#355-maintainability)
+    * [3.5.6 **Portability**](#356-portability)
   * [3.6 **Inverse Requirements**](#36-inverse-requirements)
   * [3.7 **Design Constraints**](#37-design-constraints)
   * [3.8 **Logical Database Requirements**](#38-logical-database-requirements)
   * [3.9 **Other Requirements**](#39-other-requirements)
-- [A. **Appendices**](#a-appendices)
+* [A. **Appendices**](#a-appendices)
   * [A.1 **Appendix 1 - Figures**](#a1-appendix-1---figures)
   * [A.2 **Appendix 2**](#a2-appendix-2)
 
@@ -272,74 +268,59 @@ Refer to https://docs.authlib.org/en/latest/flask/oauth2.html#authorization-serv
 
 
 ### 3.3 **Use Cases**
-
-
-#### 3.3.1 **Use Case #1**
-
-
-#### 3.3.2 **Use Case #2**
-
-…
+**N/A**
 
 
 ### 3.4 **Classes / Objects**
-
-
-#### 3.4.1 **<Class / Object #1>**
-
-3.4.1.1 Attributes
-
-3.4.1.2 Functions
-
-<Reference to functional requirements and/or use cases>
-
-
-#### 3.4.2 **<Class / Object #2>**
-
-…
+**N/A**
 
 
 ### 3.5 **Non-Functional Requirements**
 
-_Non-functional requirements may exist for the following attributes.  Often these requirements must be achieved at a system-wide level rather than at a unit level.  State the requirements in the following sections in measurable terms (e.g., 95% of transaction shall be processed in less than a second, system downtime may not exceed 1 minute per day, > 30 day MTBF value, etc). _
 
 
 #### 3.5.1 **Performance**
-
+* URL operations should complete in under 500ms on a reasonable internet connection (when connecting to a remote server)
+* Authentication and user operations should complete in under 500ms on a reasonable internet connection (when connecting to a remote server)
+* Database operations should not exceed standard times for the database solutions and should not be a major chunk of overall processing times.
 
 #### 3.5.2 **Reliability**
-
+* System must successful process all correctly formed requests both internally and externally without fail.
+* System must be able to recover from internal faults
 
 #### 3.5.3 **Availability**
-
+* Availability will rely on the host server but generally should be as close to 100% as physically possible. The software should not inhibit 100% uptime.
 
 #### 3.5.4 **Security**
-
+* The System must follow industry standards to create a secure system that will stay secure.
+* The notion of security first development must be followed.
 
 #### 3.5.5 **Maintainability**
-
+* Allow code must be written with long term maintainability in mind.
 
 #### 3.5.6 **Portability**
-
+* The system will be designed to be run primarily in *nix systems with a specific focus on Linux.
+* Linux will be the only officially supported operating system
+* **More information on containerization and microservices will follow**
 
 ### 3.6 **Inverse Requirements**
 
-_State any *useful* inverse requirements._
+The system shall not put user privacy at risk under any circumstances. Any and all analytics collected will be internal to system and not be provided to external analytic programs.
 
 
 ### 3.7 **Design Constraints**
 
-_Specify design constrains imposed by other standards, company policies, hardware limitation, etc. that will impact this software project._
+None other than what has already been listed.
 
 
 ### 3.8 **Logical Database Requirements**
 
-_Will a database be used?  If so, what logical requirements exist for data formats, storage capabilities, data retention, data integrity, etc._
+Database will be treated as a microservice. Mongodb/NoSQL or PostgresSQL will be used. Specific requirements have not been decided.
 
 
 ### 3.9 **Other Requirements**
 
-_Catchall section for any additional requirements._
+None other than what has already been listed.
 
 
 ## A. **Appendices**
