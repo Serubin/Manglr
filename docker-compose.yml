@@ -1,0 +1,89 @@
+version: "3.6"
+
+networks:
+    user-net:
+        external: true
+    shortener-net:
+    redirect-net:
+    static-net:
+    short-data-net:
+    oauth-net:
+    authentication-net:
+    auth-data-net:
+services:
+    front-loader:
+        image: nginx:alpine
+        volumes:
+            - ./front-loader/loader.conf:/etc/nginx/conf.d/default.conf
+            - ./front-loader/src:/usr/share/nginx/html
+        networks:
+            - user-net
+            - shortener-net
+            - redirect-net
+            - authentication-net
+            - static-net
+        depends_on:
+            - "shortener"
+            - "redirect"
+            - "authentication"
+            - "static"
+            - "oauth"
+    shortener:
+        build:
+            dockerfile: Dockerfile
+            context: ./shortener
+        networks:
+            - shortener-net
+            - authentication-net
+        depends_on:
+            - "shortdb"
+    redirect:
+        build:
+            dockerfile: Dockerfile
+            context: ./redirect
+        networks:
+            - redirect-net
+            - authentication-net
+        depends_on:
+            - "shortdb"
+    shortdb:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: default
+        networks:
+            - short-data-net
+
+    static:
+        image: nginx:alpine
+        volumes:
+            - ./static/static.conf:/etc/nginx/conf.d/default.conf
+            - ./static/src:/usr/share/nginx/html
+        networks:
+            - static-net
+    authentication:
+        build:
+            dockerfile: Dockerfile
+            context: ./redirect
+        networks:
+            - authentication-net
+            - oauth-net
+        depends_on:
+            - "oauth"
+            - "authdb"
+    oauth:
+        build:
+            dockerfile: Dockerfile
+            context: ./oauth
+        networks:
+            - oauth-net
+        depends_on:
+            - "authdb"
+    authdb:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: default
+        networks:
+            - auth-data-net
+
