@@ -9,7 +9,6 @@ networks:
     short-data-net:
     oauth-net:
     authentication-net:
-    auth-data-net:
 services:
     front-loader:
         image: nginx:alpine
@@ -25,9 +24,7 @@ services:
         depends_on:
             - "shortener"
             - "redirect"
-            - "authentication"
             - "static"
-            - "oauth"
     shortener:
         build:
             dockerfile: Dockerfile
@@ -61,29 +58,4 @@ services:
             - ./static/src:/usr/share/nginx/html
         networks:
             - static-net
-    authentication:
-        build:
-            dockerfile: Dockerfile
-            context: ./redirect
-        networks:
-            - authentication-net
-            - oauth-net
-        depends_on:
-            - "oauth"
-            - "authdb"
-    oauth:
-        build:
-            dockerfile: Dockerfile
-            context: ./oauth
-        networks:
-            - oauth-net
-        depends_on:
-            - "authdb"
-    authdb:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_PASSWORD: default
-        networks:
-            - auth-data-net
 

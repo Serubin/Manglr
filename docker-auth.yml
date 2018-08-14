@@ -1,0 +1,34 @@
+version: "3.6"
+
+networks:
+    oauth-net:
+    authentication-net:
+    auth-data-net:
+
+services:
+    authentication:
+        build:
+            dockerfile: Dockerfile
+            context: ./redirect
+        networks:
+            - authentication-net
+            - oauth-net
+        depends_on:
+            - "oauth"
+            - "authdb"
+    oauth:
+        build:
+            dockerfile: Dockerfile
+            context: ./oauth
+        networks:
+            - oauth-net
+        depends_on:
+            - "authdb"
+    authdb:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: default
+        networks:
+            - auth-data-net
+
