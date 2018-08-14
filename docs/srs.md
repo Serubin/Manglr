@@ -34,6 +34,7 @@ The following Software Requirements Specification has been accepted and approved
 | Signature | Printed Name | Title | Date |
 | --------- | ------------ | ----- | ---- |
 | ...       | Solomon Rubin | Working Document Approval    |  4.10.18   |
+| ...       | Solomon Rubin | Docker Addition Approval    |  8.13.18   |
 
 
 **Acknowledgements:**
