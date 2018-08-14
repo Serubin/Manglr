@@ -21,7 +21,8 @@ Mangler - Solomon Rubin
 
 | Date | Description    | Author | Comments |
 | ---- | -------------- | -------- | ------------- |
-| 1.24.18 | On Going initial document development | Solomon Rubin| On going           |
+| 1.24.18 | On Going initial document development | Solomon Rubin | N/A           |
+| 8.1.18 | Add Docker requirements | Solomon Rubin | N/A           |
 
 
 
@@ -29,8 +30,9 @@ Mangler - Solomon Rubin
 ## **Document Approval**
 
 The following Software Requirements Specification has been accepted and approved by the following:
-| Signature | Printed Name | Title | Date|
-|-----------|--------------|-------|-----|
+
+| Signature | Printed Name | Title | Date |
+| --------- | ------------ | ----- | ---- |
 | ...       | Solomon Rubin | Working Document Approval    |  4.10.18   |
 
 
@@ -39,7 +41,7 @@ The following Software Requirements Specification has been accepted and approved
 Sections of this document are based upon the IEEE Guide to Software Requirements Specification (ANSI/IEEE Std. 830-1984).  The SRS document was designed by Dr. Orest Pilskalns (WSU, Vancover) and Jack Hagemeister (WSU, Pullman).
 
 ----
-					
+
 
 **Table of Contents**
 <!-- generated with markdown-toc -->
@@ -320,8 +322,13 @@ Database will be treated as a microservice. Mongodb/NoSQL or PostgresSQL will be
 
 ### 3.9 **Other Requirements**
 
-None other than what has already been listed.
+#### 3.9.1 **Service/Architecture Requirement**
+The system will be hosted within a docker service architecture and will be required to adhere to industry standards for docker services and clusters. The implementation requires:
+* Authentication and Shortening Docker Service Segregation
+* Network segregation as a security requirement
+* Front End Load Balancer in separate service for scalability
 
+Figure 3.3 shows full detail.
 
 ## A. **Appendices**
 
@@ -330,11 +337,13 @@ None other than what has already been listed.
 
 
 ![Bit.ly home page](srs-images/bitly.png "Bit.ly home page")
-3.1 - bit.ly home page. 
+3.1 - bit.ly home page.
 
 ![ s-r.io home page](srs-images/s-rio.png "s-r.io home page")
 3.2 - s-r.io home page
 
 
-### A.2 **Appendix 2**
+### A.2 **Appendix 2 - Network Service Diagram**
+![ Manglr Service Diagram](srs-images/manglr-service-diagram.png "Network Service Diagram")
+3.3 - Network Service Diagram
 
