@@ -26,17 +26,17 @@ def load_user(user_id):
 @api.LOGIN_MANAGER.request_loader
 def load_user_from_request(request):
     api_key = request.args.get('api_token')
-    
+
     if api_key:
         return User.loadFromToken(api_key)
 
     api_key = request.headers.get('Authorization')
-    
+
     if not api_key:
         return None
 
     api_key = api_key.replace('Basic ', '', 1)
-    
+
     try:
         api_key = base64.b64decode(api_key)
     except TypeError:
@@ -56,8 +56,8 @@ def api_init(app):
     app.register_blueprint(url.api_url)
     app.register_blueprint(auth.api_auth)
     api.LOGIN_MANAGER.init_app(app)
-    
-    @app.before_request 
+
+    @app.before_request
     def require_json():
         if request.method != 'GET' and not request.get_json():
             return APIErrorResp(Defines.ERROR_PARAM, "JSON unreadable")

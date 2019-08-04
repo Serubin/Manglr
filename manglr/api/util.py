@@ -30,13 +30,13 @@ def APIResp(result, data):
     retval = {'result': result, 'version': getVersionHash() }
     if data != None:
         retval.update(data)
-    
+
     return json.dumps(retval, sort_keys=True)
 
 def getVersionHash():
-    """ Retrieves Version Hash 
+    """ Retrieves Version Hash
         Checks saved version hash first
-    """    
+    """
     #if api.VERSION_HASH == None:
     #    api.VERSION_HASH = subprocess.call(["git", "log", "--format='%h'", "-n" "1"])
     #    api.VERSION_HASH = api.VERSION + "-" + api.VERSION_HASH

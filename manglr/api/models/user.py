@@ -2,7 +2,7 @@ import api, base64, hashlib, bcrypt, time
 from pymongo import collection
 
 class User():
-    
+
     def __init__(self, email=None, load=True):
         self._id = None # Should never be exposed
         self._name = None
@@ -40,9 +40,9 @@ class User():
             'timestamp': self._timestamp,
             'is_active': True
         })
-        
+
         return True
-    
+
     def load(self, email=None):
 
         res = None
@@ -50,7 +50,7 @@ class User():
             res = api.DB.users.find({
                 'email': self._email or email
             }, { 'password_hash': 0 }).limit(1)
-        
+
         # Process results
         if not res or res.count() < 1:
             return False
@@ -67,7 +67,7 @@ class User():
         self.is_anonymous = False
 
         return True
-    
+
     def getInteralId(self):
         """ Returns internal id """
         return self._id
@@ -75,7 +75,7 @@ class User():
     def getName(self):
         """ Returns username """
         return self._name
-    
+
     def getEmail(self):
         """ Returns email """
         return self._email
@@ -121,7 +121,7 @@ class User():
                     'api_tokens' : {'name': name }
                 }
             })
-        
+
         return True
     def verifyPassword(self, password):
         if not self._email:
@@ -130,16 +130,16 @@ class User():
                 'email': self._email
             }, {
                 'email': 1,
-                'password_hash': 1 
+                'password_hash': 1
             }).limit(1)
 
         # Process results
         if not res or res.count() < 1:
             return False
-        
+
         password = base64.b64encode(hashlib.sha256(password.encode('utf-8')
 ).digest())
-    
+
         user = res[0] # Index 0 is guaranteed to exist
         password_hash = user.get('password_hash')
         if bcrypt.checkpw(password, password_hash):
@@ -150,9 +150,9 @@ class User():
 
     @staticmethod
     def loadFromToken(token, load=False):
-        res = api.DB.urls.find({ 'api_tokens': { 
-                '$in': [ { 'token': token } ] 
-            } 
+        res = api.DB.urls.find({ 'api_tokens': {
+                '$in': [ { 'token': token } ]
+            }
             }, { 'email': 1  }).limit(1)
 
         # Process results
